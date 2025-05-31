@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PuStreak - Counting Streaks</title>
+    <title>PuStreak - Counting Streaks </title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
@@ -16,9 +16,9 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
+            margin: 1000;
             text-align: center;
-            overflow: hidden;
+            overflow: bold;
         }
         .wrapper {
             display: flex;
@@ -40,9 +40,9 @@
             color: #ffe7e77a;
         }
         .highlight {
-            background: linear(135deg, #ff0000 100%, transparent 0%) repeat;
+            background: linear(135deg, #ff0000 100%, transparent 00%) repeat;
             -webkit-background-clip: text;
-            -webkit-text-fill-color: #ffa500;
+            -webkit-text-fill-color:  	#ffa500;
             background-size: 4px 4px;
         }
         p {
@@ -75,7 +75,7 @@
             width: 450px;
         }
         .modalHeading {
-            color: black;
+            color:black;
         }
         button {
             background-color: #3d3b9b;
@@ -127,78 +127,77 @@
             font-size: 1rem;
             text-decoration: underline;
             cursor: pointer;
-            margin-top: 2rem;
+            margin-top: 2rem
         }
-        /* Media Queries for Mobile Devices */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 1rem;
-            }
-            h2 {
-                font-size: 1rem;
-            }
-            p {
-                font-size: 1rem;
-            }
-            #timer {
-                font-size: 1rem;
-            }
-            button {
-                font-size: 1
-                font-size: 1rem;
-                padding: 15px 15px;
-            }
-            input {
-                font-size: 1rem;
-            }
-            label {
-                font-size: 0.5rem;
-            }
-            #modalContent {
-                width: 80%;
-                padding: 30px;
-            }
-            .footer {
-                position: fixed;
-                bottom: 8px;
-                right: 8px;
-                font-size: 0.7rem;
-            }
+    /* Media Queries for Mobile Devices */
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 1rem;
         }
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 0.9rem;
-            }
-            h2 {
-                font-size: 0.5rem;
-            }
-            p {
-                font-size: 1rem;
-            }
-            #timer {
-                font-size: 0.5rem;
-            }
-            button {
-                font-size: 0.9rem;
-                padding: 12px;
-            }
-            input {
-                font-size: 0.9rem;
-            }
-            label {
-                font-size: 1rem;
-            }
-            #modalContent {
-                width: 80%;
-                padding: 20px;
-            }
-            .footer {
-                position: fixed;
-                bottom: 8px;
-                right: 10px;
-                font-size: 0.9rem;
-            }
+        h2 {
+            font-size: 1rem;
         }
+        p {
+            font-size: 1rem;
+        }
+        #timer {
+            font-size: 1rem;
+        }
+        button {
+            font-size: 1rem;
+            padding: 15px 15px;
+        }
+        input {
+            font-size: 1rem;
+        }
+        label {
+            font-size: 0.5rem;
+        }
+        #modalContent {
+            width: 80%;
+            padding: 30px;
+        }
+        .footer {
+            position: fixed;
+            bottom: 8px;
+            right: 8px;
+            font-size: 0.7rem;
+        }
+    }
+    @media (max-width: 480px) {
+        h1 {
+            font-size: 0.9rem;
+        }
+        h2 {
+            font-size: 0.5rem;
+        }
+        p {
+            font-size: 1rem;
+        }
+        #timer {
+            font-size: 0.5rem;
+        }
+        button {
+            font-size: 0.9rem;
+            padding: 12px;
+        }
+        input {
+            font-size: 0.9rem;
+        }
+        label {
+            font-size: 1rem;
+        }
+        #modalContent {
+            width: 80%;
+            padding: 20px;
+        }
+        .footer {
+            position: fixed;
+            bottom: 8px;
+            right: 10px;
+            font-size: 0.9rem;
+        }
+    }
     </style>
 </head>
 <body>
@@ -232,25 +231,33 @@
             const streakTagline = document.getElementById('streakTaglineInput').value;
             const streakStart = document.getElementById('streakStartInput').value;
             if (streakTagline && streakStart) {
-                localStorage.setItem('streakTagline', streakTagline);
-                localStorage.setItem('streakStart', streakStart);
+                const maxAge = 60 * 60 * 24 * 365 * 68;
+                document.cookie = `streakTagline=${streakTagline}; path=/; SameSite=Strict; max-age=${maxAge}`;
+                document.cookie = `streakStart=${streakStart}; path=/; SameSite=Strict; max-age=${maxAge}`;
                 document.getElementById('modal').style.display = 'none';
                 location.reload();
             }
         }
         
         function reset() {
-            // Clear localStorage
-            localStorage.removeItem('streakStart');
-            localStorage.removeItem('streakTagline');
+            // Clear cookies
+            document.cookie = "streakStart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            document.cookie = "streakTagline=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
             // Reload the page
             location.reload();
         }
+        
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
 
         window.onload = function() {
-            const tagline = localStorage.getItem('streakTagline');
-            const start = localStorage.getItem('streakStart');
+            const tagline = getCookie('streakTagline');
+            const start = getCookie('streakStart');
 
             if (tagline && start) {
                 document.getElementById('tagline').style.display = 'inline';
@@ -269,7 +276,7 @@
 
                     document.getElementById('timer').style.display = 'inline';
                     document.getElementById('timer').innerText = `${days} Days\n${hours} Hours\n${minutes} Minutes\n${seconds} Seconds`;
-                                        document.getElementById('reset').style.display = 'inline';
+                    document.getElementById('reset').style.display = 'inline';
                 }, 1000);
             } else {
                 document.getElementById('getStartedButton').style.display = 'block';
@@ -280,6 +287,7 @@
         }
     </script>
     <script type="application/ld+json">
-    </script>
+</script>
+
 </body>
 </html>
